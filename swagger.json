@@ -1,0 +1,228 @@
+{
+  "openapi" : "3.0.0",
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/pnnguyen58/remitano-share-video/1.0.0"
+  }, {
+    "description" : "LOCAL",
+    "url" : "http://localhost:8080/v1"
+  } ],
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "Share Video Application",
+    "description" : ""
+  },
+  "paths" : {
+    "/users/register" : {
+      "post" : {
+        "tags" : [ "register user" ],
+        "summary" : "adds user item",
+        "operationId" : "addUser",
+        "description" : "Adds an item to the system",
+        "requestBody" : {
+          "description" : "",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/user"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "item created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/result"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "500" : {
+            "description" : "an existing item already exists or database error"
+          }
+        }
+      }
+    },
+    "/v1/users/login" : {
+      "post" : {
+        "tags" : [ "login" ],
+        "summary" : "get user token",
+        "operationId" : "loginUser",
+        "description" : "",
+        "requestBody" : {
+          "description" : "",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/user"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "login success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/result"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "500" : {
+            "description" : "an existing item already exists or database error"
+          }
+        }
+      }
+    },
+    "/videos/share" : {
+      "post" : {
+        "tags" : [ "share video" ],
+        "security" : [ {
+          "Bearer" : [ ]
+        } ],
+        "summary" : "share a link",
+        "operationId" : "shareVideo",
+        "description" : "Adds an item to the system",
+        "requestBody" : {
+          "description" : "",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/video"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "shared video",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/result"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "500" : {
+            "description" : "an existing item already exists or database error"
+          }
+        }
+      }
+    },
+    "/videos/list" : {
+      "get" : {
+        "security" : [ {
+          "Bearer" : [ ]
+        } ],
+        "summary" : "Server heartbeat operation",
+        "description" : "",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "integer"
+          },
+          "required" : true,
+          "description" : ""
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "integer"
+          },
+          "required" : true,
+          "description" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/result"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "500" : {
+            "description" : "an existing item already exists or"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "user" : {
+        "type" : "object",
+        "properties" : {
+          "username" : {
+            "type" : "string",
+            "example" : "nguyen.phsn"
+          },
+          "password" : {
+            "type" : "string",
+            "example" : "qazxswedc"
+          }
+        }
+      },
+      "video" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "description" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "link" : {
+            "type" : "string",
+            "example" : ""
+          }
+        }
+      },
+      "result" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "object"
+          },
+          "err" : {
+            "type" : "string",
+            "example" : ""
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}
