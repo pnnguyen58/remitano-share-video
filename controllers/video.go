@@ -19,7 +19,7 @@ func (v *VideoController) Share() {
 	if userId, e := checkToken(v.Ctx); e == nil && userId > 0 {
 		video, err := verifyVideo(v.Ctx)
 		if err == nil {
-			video.UserId = &userId
+			video.UserId = userId
 			if err = video.Share(); err != nil {
 				code = http.StatusInternalServerError
 			}

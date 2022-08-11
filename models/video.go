@@ -7,10 +7,10 @@ import (
 
 type Video struct {
 	Id       		int64  `json:"id"  gorm:"AUTO_INCREMENT;primaryKey;NOT NULL"`
-	UserId       		*int64  `json:"userId"  gorm:"column:user_id;NOT NULL"`
-	Title  			*string  `json:"title" gorm:"column:title;NOT NULL"`
+	UserId       		int64  `json:"userId"  gorm:"column:user_id;NOT NULL"`
+	Title  			string  `json:"title" gorm:"column:title;NOT NULL"`
 	Description  	string  `json:"description" gorm:"column:description;NULL"`
-	Link  			*string  `json:"link" gorm:"column:link;NOT NULL"`
+	Link  			string  `json:"link" gorm:"column:link;NOT NULL"`
 	CreatedAt     string          	`json:"createdAt" gorm:"<-:false;column:created_at;NULL"`
 }
 
@@ -27,12 +27,12 @@ func (v *Video) Share() (err error) {
 		err = connect()
 	}
 	if err == nil {
-		u := User{ID: *v.UserId}
+		u := User{ID: v.UserId}
 		err = u.Get()
 		if err != nil {
 			return
 		}
-		if u.Username != nil {
+		if u.Username != "" {
 			err = db.Create(v).Error
 		} else {
 			return errors.New("user not found")
@@ -52,7 +52,7 @@ func GetVideos(id int64, limit int, offset int) (videos []Video, err error) {
 		if offset <= 0 {
 			offset = -1
 		}
-		err = db.Where(&Video{UserId: &id}).Limit(limit).Offset(offset).Find(&videos).Error
+		err = db.Where(&Video{UserId: id}).Limit(limit).Offset(offset).Find(&videos).Error
 	}
 	return
 }

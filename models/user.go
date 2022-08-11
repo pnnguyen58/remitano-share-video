@@ -10,8 +10,8 @@ import (
 
 type User struct {
 	ID       	int64  `json:"id" gorm:"AUTO_INCREMENT;primaryKey;NOT NULL"`
-	Username  	*string  `json:"username" gorm:"column:username;NOT NULL"`
-	Password    *string `json:"password" gorm:"column:password;NOT NULL"`
+	Username  	string  `json:"username" gorm:"column:username;NOT NULL"`
+	Password    string `json:"password" gorm:"column:password;NOT NULL"`
 	CreatedAt     string          	`json:"createdAt" gorm:"<-:false;column:created_at;NULL"`
 	Token    string `json:"token,omitempty" gorm:"-"`
 }
@@ -29,12 +29,11 @@ func (u *User) Register() (err error) {
 		err = connect()
 	}
 	if err == nil {
-		hashedPassword, e := bcrypt.GenerateFromPassword([]byte(*u.Password), bcrypt.DefaultCost)
+		hashedPassword, e := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 		if e != nil {
 			return e
 		}
-		password := string(hashedPassword)
-		u.Password = &password
+		u.Password = string(hashedPassword)
 		err = db.Create(u).Error
 	}
 	return
@@ -47,13 +46,12 @@ func (u *User) Login() (err error) {
 	if err != nil {
 		return
 	}
-	password := *u.Password
+	password := u.Password
 	err = db.Where(&User{Username: u.Username}).First(u).Error
 	if err != nil {
 		return
 	}
-	hashedPassword := *u.Password
-	if err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password)); err == nil {
+	if err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password)); err == nil {
 		u.Token = uuid.New().String()
 		err = bm.Put(context.Background(), u.Token, u.ID,  1*time.Hour)
 	}

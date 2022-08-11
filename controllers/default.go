@@ -27,20 +27,6 @@ func (c *MainController) Get() {
 	c.TplName = "index.html"
 }
 
-func init() {
-	//client := redis.NewClient(&redis.Options{
-	//	Addr: "127.0.0.1:6379",
-	//	Password: "",
-	//	DB: 10,
-	//})
-	//
-	//pong, err := client.Ping().Result()
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//fmt.Println(pong)
-}
-
 func checkToken(ctx *context.Context) (userId int64, err error) {
 	var header Header
 	data, _ := json.Marshal(ctx.Request.Header)
@@ -55,7 +41,7 @@ func checkToken(ctx *context.Context) (userId int64, err error) {
 func verifyUser(ctx *context.Context) (user models.User, err error) {
 	if err = json.Unmarshal(ctx.Input.CopyBody(1024), &user); err != nil {
 		return
-	} else if user.Username == nil || user.Password == nil {
+	} else if user.Username == "" || user.Password == "" {
 		return user, errors.New("missing required input")
 	}
 	return
@@ -64,7 +50,7 @@ func verifyUser(ctx *context.Context) (user models.User, err error) {
 func verifyVideo(ctx *context.Context) (video models.Video, err error) {
 	if err = json.Unmarshal(ctx.Input.CopyBody(1024), &video); err != nil {
 		return
-	} else if video.Title == nil || video.Link == nil{
+	} else if video.Title == "" || video.Link == ""{
 		return video, errors.New("missing required input")
 	}
 	return

@@ -8,9 +8,13 @@
 ## Getting Started
 This project is a starting point for a Beego application.
 ## Project structure
-
+- MVC
 
 ## Features
+- Register: create a user with username and password
+- Login: login with username and password to receive token
+- Share video: share video with authentication
+- List video: get list of videos shared
 
 ## Tech stack
 - Framework: beego
@@ -19,6 +23,9 @@ This project is a starting point for a Beego application.
 - Cache: memory cache (using beego lib)
 
 ## Deployment
-
+- Test: go run main.go
+- Deploy by docker: 
+  - docker build --tag remitano-share-video .
+  - docker run -d -p 8080:8080 remitano-share-video
 ### References
 https://beego.vip/docs/intro/
