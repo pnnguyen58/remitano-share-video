@@ -49,7 +49,7 @@ COPY --from=builder /app/remitano-share-video /app/remitano-share-video
 #ADD codes /root/test
 ADD ./conf/ ./conf/
 #COPY ./conf/app.conf ./conf/app.conf
-EXPOSE 8080
+EXPOSE 8091
 # Run the web service on container startup.
 CMD ["/app/remitano-share-video"]
 
