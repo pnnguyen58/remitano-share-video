@@ -79,3 +79,8 @@ func SetToken(userId int64, token string) (err error) {
 	err = bm.Put(context.Background(), token, userId,  1*time.Hour)
 	return
 }
+
+func ResetToken(token string) (err error) {
+	err = bm.Delete(context.Background(), token)
+	return
+}

@@ -47,6 +47,15 @@ func (c *MainController) Get() {
 	c.TplName = "index.html"
 }
 
+func (c *MainController) Post() {
+	token := c.GetSession("token")
+	if token != nil {
+		_ = models.ResetToken(token.(string))
+		_ = c.SetSession("userId", nil)
+		_ = c.SetSession("token", nil)
+	}
+	c.Redirect("/v1/users/login", 302)
+}
 func checkToken(token string) (userId int64, err error) {
 	return models.CheckToken(token)
 }
