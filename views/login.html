@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins:400,700'><link rel="stylesheet" href="../../static/css/style.css">
+</head>
+<header class="w3-panel w3-center w3-opacity" style="padding:32px 16px">
+    <h1 class="w3-xlarge" align="center">Funny Movies</h1>
+</header>
+<body>
+<div class="login-form">
+    <form method="post">
+        <h1>Login</h1>
+        <div class="content">
+            <div class="input-field">
+                <label>
+                    <input name="username" id="username" type="text" placeholder="Username" autocomplete="nope">
+                </label>
+            </div>
+            <div class="input-field">
+                <label>
+                    <input name="password" id="password" type="password" placeholder="Password" autocomplete="new-password">
+                </label>
+            </div>
+            <div class="alert-field">
+                <p hidden="{{.Hidden}}">{{.Err}}</p>
+            </div>
+        </div>
+        <div class="action">
+            <button name="register" id="register" formaction="/v1/users/register" methods="get">Register</button>
+            <button name="login" id="login" formaction="/v1/users/login">Login</button>
+        </div>
+    </form>
+</div>
+<script  src="../static/js/login.js"></script>
+</body>
+</html>

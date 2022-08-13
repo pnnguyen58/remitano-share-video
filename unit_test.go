@@ -74,6 +74,24 @@ func TestLoginUser(t *testing.T) {
 		}
 	}
 }
+
+func TestGetUser(t *testing.T) {
+	assertions := assert.New(t)
+	username := uuid.New().String()
+	password := uuid.New().String()
+	user := models.User{
+		Username: username,
+		Password: password,
+	}
+	if err := user.Register(); err == nil {
+		err = user.Get()
+		if err != nil {
+			assertions.Equal("user not found", err.Error())
+		} else {
+			assertions.Equal("", "")
+		}
+	}
+}
 /*func TestLogin(t *testing.T) {
 	assertions := assert.New(t)
 	_, err := models.

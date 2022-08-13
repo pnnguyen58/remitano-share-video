@@ -12,7 +12,8 @@ This project is a starting point for a Beego application.
 
 ## Features
 - Register: create a user with username and password
-- Login: login with username and password to receive token
+- Login: login with username and password to receive token.
+  Token will be cached in memory and expired after 1 hour
 - Share video: share video with authentication
 - List video: get list of videos shared
 
@@ -22,10 +23,46 @@ This project is a starting point for a Beego application.
 - Database: postgres
 - Cache: memory cache (using beego lib)
 
+## Database
+
+- CREATE TABLE public.users (
+id bigserial NOT NULL,
+username text NOT NULL,
+"password" text NOT NULL,
+created_at timestamptz NULL DEFAULT now(),
+CONSTRAINT users_pk PRIMARY KEY (id),
+CONSTRAINT users_un UNIQUE (username)
+);
+  
+- CREATE TABLE public.videos (
+id bigserial NOT NULL,
+user_id int8 NOT NULL,
+title text NOT NULL,
+description text NULL,
+link text NOT NULL,
+created_at timestamptz NULL DEFAULT now(),
+CONSTRAINT videos_pk PRIMARY KEY (id)
+);
+  
 ## Deployment
-- Test: go run main.go
+- Test env: go run main.go
 - Deploy by docker: 
   - docker build --tag remitano-share-video .
   - docker run -d -p 8080:8080 remitano-share-video
+
+## Test
+- Unit test: go test unit_test.go
+- Integration test: go test integration_test.go
+
+## Scalability
+- The system must handle many users
+  - In case of using SQL database, we should using partition by time,
+  could be 3 months, to increase loading video list
+  - In case of using noSQL, because users only need add and get by
+  filter or search keywords. With using noSQL, we can optimaize speed of
+  inserting or loading videos.
+  - To increase sharing with concurrent users, we should use 
+  queuing technique (like kafka). Or we can implement by ourselves with using 
+  goroutine combine channel
 ### References
 https://beego.vip/docs/intro/

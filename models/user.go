@@ -53,7 +53,7 @@ func (u *User) Login() (err error) {
 	}
 	if err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password)); err == nil {
 		u.Token = uuid.New().String()
-		err = bm.Put(context.Background(), u.Token, u.ID,  1*time.Hour)
+		err = SetToken(u.ID, u.Token)
 	}
 	return
 }
@@ -72,5 +72,10 @@ func CheckToken(token string) (userId int64, err error) {
 	if err == nil && id.(int64) > 0 {
 		return id.(int64), err
 	}
+	return
+}
+
+func SetToken(userId int64, token string) (err error) {
+	err = bm.Put(context.Background(), token, userId,  1*time.Hour)
 	return
 }
