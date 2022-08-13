@@ -25,6 +25,11 @@ This project is a starting point for a Beego application.
 
 ## Database
 
+- docker run --name remitano-share-video-postgres --rm -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e PGDATA=/var/lib/postgresql/data/pgdata -v /tmp:/var/lib/postgresql/data -p 5432:5432 -it postgres:14.1-alpine 
+- docker exec -it nkeeping-staging-postgres /bin/sh
+- CREATE USER worker WITH ENCRYPTED PASSWORD '1qazxsw23edc';
+- CREATE DATABASE videos WITH OWNER = worker;
+
 - CREATE TABLE public.users (
 id bigserial NOT NULL,
 username text NOT NULL,
@@ -52,7 +57,10 @@ CONSTRAINT videos_pk PRIMARY KEY (id)
 
 ## Test
 - Unit test: go test unit_test.go
-- Integration test: go test integration_test.go
+- Integration test: 
+  - To implement integration_test, go to conf/app.conf
+  and comment "SessionOn = true"
+  execute: go test integration_test.go
 
 ## Scalability
 - The system must handle many users

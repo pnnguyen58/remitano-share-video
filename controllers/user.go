@@ -62,7 +62,7 @@ func (u *UserController) Login() {
 func (u *UserController) RegisterTest() {
 	var response Response
 	code := http.StatusOK
-	user, err := getUser(u)
+	user, err := verifyUser(u.Ctx)
 	if err == nil {
 		if err = user.Register(); err == nil {
 			response.Data = user
@@ -83,7 +83,7 @@ func (u *UserController) RegisterTest() {
 func (u *UserController) LoginTest() {
 	var response Response
 	code := http.StatusOK
-	user, err := getUser(u)
+	user, err := verifyUser(u.Ctx)
 	if err == nil {
 		if err = user.Login(); err == nil {
 			response.Data = user

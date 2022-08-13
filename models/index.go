@@ -14,6 +14,10 @@ import (
 
 const (
 	psqlConn = "host=%v user=%v dbname=%v sslmode=disable password=%v port=%v search_path=public"
+	host = "localhost"
+	user = "worker"
+	dbname = "videos"
+	pass = "1qazxsw23edc"
 )
 
 var db *gorm.DB
@@ -32,7 +36,7 @@ func init() {
 }
 
 func connect() (err error) {
-	strConn := fmt.Sprintf(psqlConn, "db-staging.custodian.link", "orders", "orders", "orders", 5432)
+	strConn := fmt.Sprintf(psqlConn, host, user, dbname, pass, 5432)
 	db, err = gorm.Open(postgres.Open(strConn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
 	})

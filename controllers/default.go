@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/server/web/context"
 	"remitano-share-video/models"
 )
 
@@ -47,6 +49,24 @@ func (c *MainController) Get() {
 
 func checkToken(token string) (userId int64, err error) {
 	return models.CheckToken(token)
+}
+
+func verifyUser(ctx *context.Context) (user models.User, err error) {
+	if err = json.Unmarshal(ctx.Input.CopyBody(1024), &user); err != nil {
+		return
+	} else if user.Username == "" || user.Password == "" {
+		return user, errors.New("missing required input")
+	}
+	return
+}
+
+func verifyVideo(ctx *context.Context) (video models.Video, err error) {
+	if err = json.Unmarshal(ctx.Input.CopyBody(1024), &video); err != nil {
+		return
+	} else if video.Title == "" || video.Link == ""{
+		return video, errors.New("missing required input")
+	}
+	return
 }
 
 func getVideo(u *VideoController) (video models.Video, err error) {
